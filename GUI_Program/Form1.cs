@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace GUI_Program
 {
     public partial class Form1 : Form
@@ -14,15 +16,43 @@ namespace GUI_Program
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Click button Run");
+
+            //
+            if (textBox1.Text.ToLower().Equals("rectangle"))
+            {
+                drawRectangle();
+            }else
+            {
+                MessageBox.Show("nothing or not defined.");
+            }
+
+
+
         }
+
+        private void drawRectangle()
+        {
+           
+            Graphics g = panel1.CreateGraphics();
+            Pen selPen = new Pen(Color.Blue);
+            g.DrawRectangle(selPen, 10, 10, 50, 50);
+            g.Dispose();
+        }
+
+       
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Click on Syntax");
+           
+            MessageBox.Show("Syntax button message");
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }

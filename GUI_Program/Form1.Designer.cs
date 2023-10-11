@@ -75,6 +75,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(428, 295);
             panel1.TabIndex = 3;
+            panel1.Paint += panel1_Paint;
             // 
             // textBox1
             // 
