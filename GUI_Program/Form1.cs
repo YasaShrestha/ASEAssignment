@@ -18,23 +18,23 @@ namespace GUI_Program
         {
 
             //
-            if (codeTextBox.Text.ToLower().Equals("circle"))
+            if (codeTextBox.Text.ToLower().Equals("circle")|| richcodeTextBox.Text.ToLower().Equals("circle"))
             {
                 drawCircle();
-            }else if(codeTextBox.Text.ToLower().Equals("rectangle"))
+            }else if(codeTextBox.Text.ToLower().Equals("rectangle")|| richcodeTextBox.Text.ToLower().Equals("rectangle"))
             {
                 drawRectangle();
             }
-            else if(codeTextBox.Text.ToLower().Equals("drawto"))
+            else if(codeTextBox.Text.ToLower().Equals("drawto") || richcodeTextBox.Text.ToLower().Equals("drawto"))
             {
                 drawTo();
     }
-            else if (codeTextBox.Text.ToLower().Equals("trangle"))
+            else if (codeTextBox.Text.ToLower().Equals("trangle") || richcodeTextBox.Text.ToLower().Equals("trangle"))
             {
                 drawTrangle();
                 //MessageBox.Show("Trangle");
             }
-            else if (codeTextBox.Text.ToLower().Equals("clear"))
+            else if (codeTextBox.Text.ToLower().Equals("clear") || richcodeTextBox.Text.ToLower().Equals("clear"))
             {
                 clearDraw();
             }
@@ -121,6 +121,8 @@ namespace GUI_Program
             Graphics g = drawingBoard.CreateGraphics();
             g.Clear(Color.SkyBlue);
         }
+
+
 
 
 
