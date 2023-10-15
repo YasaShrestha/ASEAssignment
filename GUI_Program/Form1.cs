@@ -14,21 +14,31 @@ namespace GUI_Program
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void runButton_Click(object sender, EventArgs e)
         {
 
             //
-            if (textBox1.Text.ToLower().Equals("circle"))
+            if (codeTextBox.Text.ToLower().Equals("circle"))
             {
                 drawCircle();
-            }else if(textBox1.Text.ToLower().Equals("rectangle"))
+            }else if(codeTextBox.Text.ToLower().Equals("rectangle"))
             {
                 drawRectangle();
             }
-            else if(textBox1.Text.ToLower().Equals("drawto"))
+            else if(codeTextBox.Text.ToLower().Equals("drawto"))
             {
                 drawTo();
-    }else
+    }
+            else if (codeTextBox.Text.ToLower().Equals("trangle"))
+            {
+                drawTrangle();
+                //MessageBox.Show("Trangle");
+            }
+            else if (codeTextBox.Text.ToLower().Equals("clear"))
+            {
+                clearDraw();
+            }
+            else
             {
                
                 MessageBox.Show("nothing or not defined.");
@@ -41,9 +51,9 @@ namespace GUI_Program
         private void drawRectangle()
         {
            
-            Graphics g = panel1.CreateGraphics();
-            Pen selPen = new Pen(Color.Blue);
-            g.DrawRectangle(selPen, 10, 10, 50, 50);
+            Graphics g = drawingBoard.CreateGraphics();
+            Pen penen = new Pen(Color.Black);
+            g.DrawRectangle(penen, 10, 10, 50, 50);
             g.Dispose();
         }
 
@@ -52,7 +62,7 @@ namespace GUI_Program
         private void drawCircle()
         {
 
-            Graphics g = panel1.CreateGraphics();
+            Graphics g = drawingBoard.CreateGraphics();
 
             // Define the circle's position and size
             int x = 100; // X-coordinate of the circle's center
@@ -63,7 +73,7 @@ namespace GUI_Program
             Pen pen = new Pen(Color.Black);
 
             // Fill the circle with a color
-            Brush brush = new SolidBrush(Color.Red);
+            Brush brush = new SolidBrush(Color.Black);
 
             // Draw the circle
            // g.FillEllipse(brush, x - radius, y - radius, 2 * radius, 2 * radius);
@@ -75,37 +85,57 @@ namespace GUI_Program
 
         private void drawTrangle()
         {
-            Graphics g = panel1.CreateGraphics();
+            Graphics g = drawingBoard.CreateGraphics();
+            Pen pen = new Pen(Color.Black);
+
+            int width = 100;
+            int height = 100;
+
+            Point[] trianglePoints = {
+            new Point(width / 2, 0), // Top point
+            new Point(0, height),    // Bottom-left point
+            new Point(width,height) // Bottom-right point
+            };
+
+            g.DrawPolygon(pen, trianglePoints);
+            pen.Dispose();
+
         }
 
         private void drawTo()
         {
-            Graphics g = panel1.CreateGraphics();
+            Graphics g = drawingBoard.CreateGraphics();
             // Create pen.
-            Pen blackPen = new Pen(Color.Black, 3);
+            Pen pen = new Pen(Color.Black);
 
             // Create points that define line.
-            PointF point1 = new PointF(100.0F, 100.0F);
-            PointF point2 = new PointF(500.0F, 100.0F);
+            PointF point1 = new PointF(100, 100);
+            PointF point2 = new PointF(250, 100);
 
             // Draw line to screen.
-            g.DrawLine(blackPen, point1, point2);
+            g.DrawLine(pen, point1, point2);
+        }
+
+        private void clearDraw()
+        {
+            Graphics g = drawingBoard.CreateGraphics();
+            g.Clear(Color.SkyBlue);
         }
 
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void syntaxButton_Click(object sender, EventArgs e)
         {
            
             MessageBox.Show("Syntax button message");
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void codeTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void drawingBoard_Paint(object sender, PaintEventArgs e)
         {
 
         }
