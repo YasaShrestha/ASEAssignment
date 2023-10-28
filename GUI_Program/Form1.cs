@@ -1,3 +1,4 @@
+using System.Net;
 using System.Windows.Forms;
 
 namespace GUI_Program
@@ -14,86 +15,124 @@ namespace GUI_Program
 
         }
 
+        private Color PenColor = Color.Black;
+
+        // all this method logic will be shifted to CommandParser class
         private void runButton_Click(object sender, EventArgs e)
         {
-
-            //
-            if (codeTextBox.Text.ToLower().Equals("circle")|| richcodeTextBox.Text.ToLower().Equals("circle"))
+            String inputCommand = codeTextBox.Text;
+            if (inputCommand == null ||  inputCommand.Length == 0)
             {
-                drawCircle();
-            }else if(codeTextBox.Text.ToLower().Equals("rectangle")|| richcodeTextBox.Text.ToLower().Equals("rectangle"))
-            {
-                drawRectangle();
+                inputCommand = richcodeTextBox.Text;
             }
-            else if(codeTextBox.Text.ToLower().Equals("drawto") || richcodeTextBox.Text.ToLower().Equals("drawto"))
+
+            //google string split on the basis of  new line 
+            //return will be array list
+            //iterated/loop through that array list and each item will be passed as inputCommand to below code
+
+            //code block start
+            // reason: it will cover box text field i.e multiple command as well as single command enable
+
+            //after first space split that one string then we will get cmd and parameter seperately
+            //split param section on the basis of comma, then trim all space one by one from each param
+            if (inputCommand.ToLower().Equals("circle")|| inputCommand.ToLower().Equals("circle"))
             {
-                drawTo();
+                float raduis = 10;
+                drawCircle(raduis);
+            }else if(inputCommand.ToLower().Equals("rectangle")|| inputCommand.ToLower().Equals("rectangle"))
+            {
+                float width = 10;
+                float height = 10;
+                drawRectangle(width, height);
+            }
+            else if(inputCommand.Equals("drawto") || inputCommand.ToLower().Equals("drawto"))
+            {
+                float startingPoint = 10;
+                float endPoint = 20;
+                drawTo(startingPoint,endPoint);
     }
-            else if (codeTextBox.Text.ToLower().Equals("trangle") || richcodeTextBox.Text.ToLower().Equals("trangle"))
+            else if (inputCommand.ToLower().Equals("trangle") || richcodeTextBox.Text.ToLower().Equals("trangle"))
             {
-                drawTrangle();
+                
+                int width = 10;
+            int height = 10;
+                drawTrangle(width,height);
                 //MessageBox.Show("Trangle");
             }
             else if (codeTextBox.Text.ToLower().Equals("clear") || richcodeTextBox.Text.ToLower().Equals("clear"))
             {
                 clearDraw();
             }
+            else if (codeTextBox.Text.ToLower().Equals("reset") || richcodeTextBox.Text.ToLower().Equals("reset"))
+            {
+                reset();
+            }
+            else if (codeTextBox.Text.ToLower().Equals("moveto") || richcodeTextBox.Text.ToLower().Equals("moveto"))
+            {
+                moveTo(Xpos,Ypos);
+            }
+            else if (codeTextBox.Text.ToLower().Equals("pen") || richcodeTextBox.Text.ToLower().Equals("pen"))
+            {
+                PenColor = Color.Red;
+            }
+            //code block end
             else
             {
                
                 MessageBox.Show("nothing or not defined.");
             }
+           
 
 
 
         }
 
-        private void drawRectangle()
+        private void drawPen(String penColor)
+        {
+
+            this.PenColor = Color.Red; // penColor change TO Color instance
+        }
+
+        private void drawRectangle(float width, float height)
         {
            
             Graphics g = drawingBoard.CreateGraphics();
-            Pen penen = new Pen(Color.Black);
-            g.DrawRectangle(penen, 10, 10, 50, 50);
+            Pen penen = new Pen(PenColor);
+            g.DrawRectangle(penen, Xpos, Ypos, width, height);
             g.Dispose();
         }
 
        
 
-        private void drawCircle()
+        private void drawCircle(float radius)
         {
 
             Graphics g = drawingBoard.CreateGraphics();
-
-            // Define the circle's position and size
-            int x = 100; // X-coordinate of the circle's center
-            int y = 100; // Y-coordinate of the circle's center
-            int radius = 50; // Radius of the circle
-
             // Create a Pen for drawing the outline of the circle
-            Pen pen = new Pen(Color.Black);
+            Pen pen = new Pen(PenColor);
+
+            
+           
 
             // Fill the circle with a color
-            Brush brush = new SolidBrush(Color.Black);
+            Brush brush = new SolidBrush(PenColor);
 
             // Draw the circle
            // g.FillEllipse(brush, x - radius, y - radius, 2 * radius, 2 * radius);
-            g.DrawEllipse(pen, x - radius, y - radius, 2 * radius, 2 * radius);
+            g.DrawEllipse(pen, Xpos- radius, Ypos - radius, 2 * radius, 2 * radius);
 
-            // Clean up resources
             pen.Dispose();
         }
 
-        private void drawTrangle()
+        private void drawTrangle(int width, int height)
         {
             Graphics g = drawingBoard.CreateGraphics();
-            Pen pen = new Pen(Color.Black);
+            Pen pen = new Pen(PenColor);
 
-            int width = 100;
-            int height = 100;
 
             Point[] trianglePoints = {
-            new Point(width / 2, 0), // Top point
-            new Point(0, height),    // Bottom-left point
+            new Point(width / 2, height), // Top point
+            new Point(width, height),    // Bottom-left point
             new Point(width,height) // Bottom-right point
             };
 
@@ -102,24 +141,55 @@ namespace GUI_Program
 
         }
 
-        private void drawTo()
+        private void drawTo(float Xpos, float Ypos)
         {
             Graphics g = drawingBoard.CreateGraphics();
             // Create pen.
-            Pen pen = new Pen(Color.Black);
+            Pen pen = new Pen(PenColor);
 
             // Create points that define line.
-            PointF point1 = new PointF(100, 100);
-            PointF point2 = new PointF(250, 100);
+            PointF point1 = new PointF(this.Xpos, Ypos);
+            PointF point2 = new PointF(this.Ypos, Xpos);
 
             // Draw line to screen.
             g.DrawLine(pen, point1, point2);
+            pen.Dispose();
         }
 
         private void clearDraw()
         {
             Graphics g = drawingBoard.CreateGraphics();
             g.Clear(Color.SkyBlue);
+        }
+
+        private float Xpos = 200;
+        private float Ypos = 200;
+
+        private void moveTo(float Xpos, float Ypos)
+        {
+            Graphics g = drawingBoard.CreateGraphics();
+            // Create pen.
+            Pen pen = new Pen(PenColor);
+            this.Xpos = 50;
+            this.Ypos = 100;
+
+
+        }
+
+       
+
+        private void reset()
+        {
+            Graphics g = drawingBoard.CreateGraphics();
+            // Create pen.
+            Pen pen = new Pen(PenColor);
+
+            pen.ResetTransform();
+            pen.Dispose();
+            //this.moveTo(0,0);
+            this.Xpos = 0;
+            this.Ypos = 0;
+           
         }
 
 
