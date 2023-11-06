@@ -1,6 +1,6 @@
 ﻿namespace Shapes
 {
-    // Parent class
+    
     public class Rectangle : Shape
     {
         protected int width;
@@ -14,8 +14,12 @@
             this.height = height;
         }
 
-        public override void Draw()
+        public override void Draw(bool fillColor)
         {
+            if(fillColor) { 
+            SolidBrush brush = new SolidBrush(Color.Blue);
+            graphics.FillRectangle(brush, Xpos, Ypos, width, height);
+        }else
             graphics.DrawRectangle(pen, Xpos, Ypos, width, height);
         }
     }

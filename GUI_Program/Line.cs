@@ -15,7 +15,7 @@
             this.startPoint = startPoint;
         }
 
-        public override void Draw()
+        public override void Draw(bool fillColor)
         {
 
             // Create points that define line.

@@ -15,6 +15,7 @@ namespace GUI_Program
         private Color PenColor = Color.Black;
         private int Xpos = 0;
         private int Ypos = 0;
+        private bool fill = false;
 
         public void CommandParserProcess(Graphics g, String inputCommand)
         {
@@ -56,7 +57,7 @@ namespace GUI_Program
                             int radius = Int32.Parse(paramArray[0]);
 
                             Shape circle = new Shapes.Circle(g, pen, Xpos, Ypos, radius);
-                            circle.Draw();
+                            circle.Draw(fill);
                             break;
 
                         case "rectangle":
@@ -69,7 +70,7 @@ namespace GUI_Program
                         int width = Int32.Parse(paramArray[0]);
                             int height = Int32.Parse(paramArray[1]);
                             Shape rectangle = new Shapes.Rectangle(g, pen, Xpos, Ypos, width, height);
-                            rectangle.Draw();
+                            rectangle.Draw(fill);
                             break;
 
                         case "drawto":
@@ -82,7 +83,7 @@ namespace GUI_Program
                         int startingPoint = Int32.Parse(paramArray[0]);
                             int endPoint = Int32.Parse(paramArray[1]);
                             Shape line = new Shapes.Line(g, pen, Xpos, Ypos, startingPoint, endPoint);
-                            line.Draw();
+                            line.Draw(fill);
                             break;
 
                         case "triangle":
@@ -95,7 +96,7 @@ namespace GUI_Program
                         int triWidth = Int32.Parse(paramArray[0]);
                             int triHeight = Int32.Parse(paramArray[1]);
                             Shape triangle = new Shapes.Triangle(g, pen, Xpos, Ypos, triWidth, triHeight);
-                            triangle.Draw();
+                            triangle.Draw(fill);
                             break;
 
                         case "clear":
@@ -119,7 +120,7 @@ namespace GUI_Program
                             break;
 
                         case "pen":
-                        if ( !(paramArray[0] is string)&&paramArray[0] != "red"&& paramArray[0] != "green" && paramArray[0]!="blue")
+                        if (paramArray[0] != "red"&& paramArray[0] != "green" && paramArray[0]!="blue")
                         {
                             MessageBox.Show("Please input valid colour :red green or blue");
 

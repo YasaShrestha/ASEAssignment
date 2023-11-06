@@ -1,6 +1,6 @@
 ﻿namespace Shapes
 {
-    // Parent class
+    
     public class Triangle : Shape
     {
         protected int width;
@@ -14,7 +14,7 @@
             this.height = height;
         }
 
-        public override void Draw()
+        public override void Draw(bool fillColor)
         {
             Point[] trianglePoints = {
             new Point(Xpos, Ypos), // Top point

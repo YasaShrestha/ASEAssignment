@@ -17,7 +17,8 @@ namespace Shapes
             this.Ypos = ypos;
         }
 
-        public abstract void Draw();
+
+        public abstract void Draw(bool fillColor);
 
 }
 }

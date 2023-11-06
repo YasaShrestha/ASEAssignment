@@ -33,13 +33,15 @@
             syntaxButton = new Button();
             drawingBoard = new Panel();
             codeTextBox = new TextBox();
+            button1 = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // richcodeTextBox
             // 
-            richcodeTextBox.Location = new Point(1, 17);
+            richcodeTextBox.Location = new Point(3, 17);
             richcodeTextBox.Name = "richcodeTextBox";
-            richcodeTextBox.Size = new Size(472, 295);
+            richcodeTextBox.Size = new Size(502, 456);
             richcodeTextBox.TabIndex = 0;
             richcodeTextBox.Text = "";
             // 
@@ -47,7 +49,7 @@
             // 
             runButton.BackColor = Color.SkyBlue;
             runButton.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
-            runButton.Location = new Point(12, 402);
+            runButton.Location = new Point(1, 517);
             runButton.Name = "runButton";
             runButton.Size = new Size(153, 48);
             runButton.TabIndex = 1;
@@ -60,7 +62,7 @@
             syntaxButton.BackColor = SystemColors.MenuText;
             syntaxButton.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             syntaxButton.ForeColor = SystemColors.Control;
-            syntaxButton.Location = new Point(248, 402);
+            syntaxButton.Location = new Point(160, 517);
             syntaxButton.Name = "syntaxButton";
             syntaxButton.Size = new Size(151, 48);
             syntaxButton.TabIndex = 2;
@@ -73,23 +75,45 @@
             drawingBoard.BackColor = Color.SkyBlue;
             drawingBoard.Location = new Point(511, 17);
             drawingBoard.Name = "drawingBoard";
-            drawingBoard.Size = new Size(428, 295);
+            drawingBoard.Size = new Size(428, 489);
             drawingBoard.TabIndex = 3;
             drawingBoard.Paint += drawingBoard_Paint;
             // 
             // codeTextBox
             // 
-            codeTextBox.Location = new Point(1, 339);
+            codeTextBox.Location = new Point(1, 479);
             codeTextBox.Name = "codeTextBox";
-            codeTextBox.Size = new Size(472, 27);
+            codeTextBox.Size = new Size(502, 27);
             codeTextBox.TabIndex = 4;
             codeTextBox.TextChanged += codeTextBox_TextChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(317, 517);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 42);
+            button1.TabIndex = 5;
+            button1.Text = "Open";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(417, 517);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 42);
+            button2.TabIndex = 6;
+            button2.Text = "Save";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(951, 753);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(codeTextBox);
             Controls.Add(drawingBoard);
             Controls.Add(syntaxButton);
@@ -109,5 +133,7 @@
         private Button syntaxButton;
         private Panel drawingBoard;
         private TextBox codeTextBox;
+        private Button button1;
+        private Button button2;
     }
 }

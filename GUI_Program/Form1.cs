@@ -19,9 +19,7 @@ namespace GUI_Program
         }
 
 
-        //Rectangle rectangle= new Rectangle();
-
-        // all this method logic will be shifted to CommandParser class
+        
         private void runButton_Click(object sender, EventArgs e)
         {
             String inputCommand = codeTextBox.Text;
