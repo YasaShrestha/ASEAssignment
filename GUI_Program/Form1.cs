@@ -19,13 +19,13 @@ namespace GUI_Program
         }
 
 
-        
+        /*this method will take the command line and process it through the command parser*/
         private void runButton_Click(object sender, EventArgs e)
         {
-            String inputCommand = codeTextBox.Text;
+            String inputCommand = richcodeTextBox.Text;
             if (inputCommand == null || inputCommand.Length == 0)
             {
-                inputCommand = richcodeTextBox.Text;
+                inputCommand = codeTextBox.Text;
             }
 
             Graphics g = drawingBoard.CreateGraphics();
@@ -57,33 +57,40 @@ namespace GUI_Program
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
+           
+
             openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "txt files(*.txt)|*.txt|All files(*.*)|*.*;";
+            openFileDialog1.FilterIndex = 0;
+            openFileDialog1.RestoreDirectory = true;
 
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
-            string selectedFileName = openFileDialog1.FileName;
+            string readFileLocation = openFileDialog1.FileName;
 
 
-            string readText = File.ReadAllText(@"C:\Users\hp\Desktop\New folder\gpl_program.txt");
+            string readText = File.ReadAllText(readFileLocation);
             richcodeTextBox.Text = readText;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            openFileDialog1.InitialDirectory = "c:\\";
+            saveFileDialog1.InitialDirectory = "c:\\";
+            saveFileDialog1.Filter = "txt files(*.txt)|*.txt|All files(*.*)|*.*;";
+            saveFileDialog1.FilterIndex = 0;
+            saveFileDialog1.RestoreDirectory= true;
 
-
-            if (openFileDialog1.ShowDialog() != DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
-            string selectedFileName = openFileDialog1.FileName;
+            string saveFileLocation = saveFileDialog1.FileName;
 
             String inputCommand = codeTextBox.Text;
             if (inputCommand == null || inputCommand.Length == 0)
@@ -92,7 +99,7 @@ namespace GUI_Program
             }
 
             //save inputCommand to file
-            File.WriteAllText(@"C:\Users\hp\Desktop\New folder\gpl_program.txt", inputCommand);
+            File.WriteAllText(saveFileLocation, inputCommand);
         }
     }
 }
