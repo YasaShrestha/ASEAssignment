@@ -348,6 +348,47 @@ namespace GUI_Program
 
 
             }
+
+            else if (expression.Contains("-"))
+            {
+                string[] ops = expression.Split("-");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) - int.Parse(op2);
+
+
+            }
+
+            else if (expression.Contains("*"))
+            {
+                string[] ops = expression.Split("*");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) * int.Parse(op2);
+
+
+            }
+            else if (expression.Contains("/"))
+            {
+                string[] ops = expression.Split("/");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) / int.Parse(op2);
+
+
+            }
             return int.Parse(expression);
         }
 
