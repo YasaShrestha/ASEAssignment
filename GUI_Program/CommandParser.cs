@@ -194,7 +194,53 @@ namespace GUI_Program
                                 }
                             }
                             break;
-                        
+                        case "endwhile":
+                        case "while":
+                            string evalCondtionLoop = paramArray[0].Trim();
+                            if (evalCondtionLoop.Equals("endwhile"))
+                            {
+                                // do nothing
+                            }
+                            else
+                            {
+                                if (conditionEval(evalCondtionLoop))
+                                {
+                                    for (int ifIndex = i + 1; ifIndex < lineByLineCmdReader.Length; ifIndex++)
+                                    {
+                                        string nextStatement = lineByLineCmdReader[ifIndex].Trim();
+
+                                        if (!conditionEval(evalCondtionLoop))
+                                        {
+                                            i = ifIndex;
+                                            break;
+                                        }
+                                        else if (nextStatement.Equals("endwhile"))
+                                        {
+                                            ifIndex = i;
+                                        }
+                                        else
+                                        {
+                                            CommandParserProcess(g, nextStatement);
+                                        }
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    for (int ifIndex = i; ifIndex < lineByLineCmdReader.Length; ifIndex++)
+                                    {
+                                        string nextStatement = lineByLineCmdReader[ifIndex].Trim();
+                                        if (nextStatement.Equals("endwhile"))
+                                        {
+                                            i = ifIndex;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            }
+                            break;
                         default:
                             /*If the command is not recognized*/
                             MessageBox.Show("Command not supported.");
