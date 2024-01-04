@@ -1,5 +1,4 @@
-﻿using Shapes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,49 +19,71 @@ namespace GUI_Program
         private Dictionary<string, string> variableValueMap = new Dictionary<string, string>();
         private Dictionary<string, string> methodMap = new Dictionary<string, string>();
 
-        public void CommandParserProcess(Graphics g, String inputCommand)
+        public void CommandParserProcess(Graphics g, String inputCommand, Boolean isSyntaxCheckOnly)
         {
-            if (inputCommand == null || inputCommand.Length == 0)
+            try
             {
-                MessageBox.Show("Command not found. Please input command.");
-                return;
-            }
-                // Split input commands by line
-                String[] lineByLineCmdReader = inputCommand.Split("\n");
-
-                for (int i = 0; i < lineByLineCmdReader.Length; i++)
+                if (inputCommand == null || inputCommand.Length == 0)
                 {
-                    Pen pen = new Pen(PenColor);
+                    throw new GPLException("Command not found. Please input command.");
+                }
+                processEngine(g, inputCommand, isSyntaxCheckOnly);
+                if (isSyntaxCheckOnly)
+                {
+                    MessageBox.Show("Success: No Syntax Error.");
+                }else
+                {
+                    MessageBox.Show("Success: Successfully Run.");
+                }
+            }
+            catch(GPLException x) {
+                MessageBox.Show("User Error: "+x.Message);
+            }
+            catch(Exception x) {
+                MessageBox.Show("System Error"+x.Message);
+            }
+        }
 
-                if(lineByLineCmdReader[i].Trim().Length == 0)
+        public void processEngine(Graphics g, String inputCommand, Boolean isSyntaxCheckOnly)
+        {
+            
+            
+            // Split input commands by line
+            String[] lineByLineCmdReader = inputCommand.Split("\n");
+
+            for (int i = 0; i < lineByLineCmdReader.Length; i++)
+            {
+                Pen pen = new Pen(PenColor);
+
+                if (lineByLineCmdReader[i].Trim().Length == 0)
                 {
                     continue;
                 }
 
-                    var cmd = lineByLineCmdReader[i];
+                var cmd = lineByLineCmdReader[i];
 
-                
-                    var splitted = cmd.Split(' ', 2);
-                    var inputCommandPartOnly = splitted[0].ToLower().Trim();
 
-                    var inputParam = "";
-                    if (splitted.Length > 1)
-                    {
-                        inputParam = splitted[1];
-                    }
+                var splitted = cmd.Split(' ', 2);
+                var inputCommandPartOnly = splitted[0].ToLower().Trim();
 
-                    String[] paramArray = inputParam.Split(",");
+                var inputParam = "";
+                if (splitted.Length > 1)
+                {
+                    inputParam = splitted[1];
+                }
+
+                String[] paramArray = inputParam.Split(",");
 
                 String[] paramArrayParsed = new String[paramArray.Length];
                 int count = 0;
-                    foreach ( var param in paramArray )
+                foreach (var param in paramArray)
                 {
-                    paramArrayParsed[count] = variableValueMap.ContainsKey(param)? variableValueMap[param] : param;
+                    paramArrayParsed[count] = variableValueMap.ContainsKey(param) ? variableValueMap[param] : param;
                     count++;
                 }
                 paramArray = paramArrayParsed;
 
-                    if (cmd.Contains("="))
+                if (cmd.Contains("="))
                 {
                     string[] variables = cmd.Split("=", 2);
                     string variableName = variables[0].Trim();
@@ -82,58 +103,65 @@ namespace GUI_Program
                         case "circle":
                             if (paramArray == null || paramArray.Length != 1 || paramArray[0].Trim().Length == 0 || !int.TryParse(paramArray[0], out _))
                             {
-                                MessageBox.Show("Cirlce need one parameter. Please input the valid radius value.");
+                                throw new GPLException("Cirlce need one parameter. Please input the valid radius value.", i);
                                 return;
                             }
 
 
                             int radius = Int32.Parse(paramArray[0]);
 
-                            Shape circle = new Shapes.Circle(g, pen, Xpos, Ypos, radius);
-                            circle.Draw(fill);
+                            Shapes circle = new Circle(g, pen, Xpos, Ypos, radius);
+                            if (!isSyntaxCheckOnly)
+                                circle.Draw(fill);
+
+
                             break;
 
                         case "rectangle":
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
-                                MessageBox.Show("Please input valid width and height for rectangle ");
+                                throw new GPLException("Please input valid width and height for rectangle ", i);
                                 return;
 
                             }
                             int width = Int32.Parse(paramArray[0]);
                             int height = Int32.Parse(paramArray[1]);
-                            Shape rectangle = new Shapes.Rectangle(g, pen, Xpos, Ypos, width, height);
-                            rectangle.Draw(fill);
+                            Shapes rectangle = new Rectangle(g, pen, Xpos, Ypos, width, height);
+                            if (!isSyntaxCheckOnly)
+                                rectangle.Draw(fill);
                             break;
 
                         case "drawto":
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) && !int.TryParse(paramArray[1], out _))
                             {
-                                MessageBox.Show("Please input valid starting point value and end point value ");
+                                throw new GPLException("Please input valid starting point value and end point value ", i);
                                 return;
 
                             }
                             int startingPoint = Int32.Parse(paramArray[0]);
                             int endPoint = Int32.Parse(paramArray[1]);
-                            Shape line = new Shapes.Line(g, pen, Xpos, Ypos, startingPoint, endPoint);
-                            line.Draw(fill);
+                            Shapes line = new Line(g, pen, Xpos, Ypos, startingPoint, endPoint);
+                            if (!isSyntaxCheckOnly)
+                                line.Draw(fill);
                             break;
 
                         case "triangle":
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
-                                MessageBox.Show("Please input valid width and height for the triangle ");
+                                throw new GPLException("Please input valid width and height for the triangle ", i);
                                 return;
 
                             }
                             int triWidth = Int32.Parse(paramArray[0]);
                             int triHeight = Int32.Parse(paramArray[1]);
-                            Shape triangle = new Shapes.Triangle(g, pen, Xpos, Ypos, triWidth, triHeight);
-                            triangle.Draw(fill);
+                            Shapes triangle = new Triangle(g, pen, Xpos, Ypos, triWidth, triHeight);
+                            if (!isSyntaxCheckOnly)
+                                triangle.Draw(fill);
                             break;
 
                         case "clear":
-                            clearDraw(g);
+                            if (!isSyntaxCheckOnly)
+                                clearDraw(g);
 
                             break;
 
@@ -144,7 +172,7 @@ namespace GUI_Program
                         case "moveto":
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
-                                MessageBox.Show("Please input valid X axis and Y axis ");
+                                throw new GPLException("Please input valid X axis and Y axis ", i);
                                 return;
 
                             }
@@ -156,7 +184,7 @@ namespace GUI_Program
                         case "pen":
                             if (paramArray[0] != "red" && paramArray[0] != "green" && paramArray[0] != "blue")
                             {
-                                MessageBox.Show("Please input valid colour :red green or blue");
+                                throw new GPLException("Please input valid colour :red green or blue", i);
 
                                 return;
                             }
@@ -175,7 +203,7 @@ namespace GUI_Program
                                 fill = false;
                             }
                             else
-                                MessageBox.Show("Please give a valid command for fill.");
+                                throw new GPLException("Please give a valid command for fill.", i);
 
 
 
@@ -226,7 +254,11 @@ namespace GUI_Program
                                         }
                                         else
                                         {
-                                            CommandParserProcess(g, nextStatement);
+                                            if (nextStatement == null || nextStatement.Length == 0)
+                                            {
+                                                continue;
+                                            }
+                                            processEngine(g, nextStatement, isSyntaxCheckOnly);
                                         }
 
 
@@ -252,10 +284,11 @@ namespace GUI_Program
                         case "endmethod":
                         case "method":
                             string methodName = paramArray[0].Trim();
-                            if (inputCommandPartOnly.Contains("callmethod")){
+                            if (inputCommandPartOnly.Contains("callmethod"))
+                            {
                                 if (!methodMap.ContainsKey(methodName))
                                 {
-                                    MessageBox.Show("Method not declare yet.");
+                                    throw new GPLException("Method not declare yet.", i);
                                     break;
                                 }
 
@@ -264,15 +297,18 @@ namespace GUI_Program
                                 for (int methodCallIndex = 0; methodCallIndex < lineByLinemethodBody.Length; methodCallIndex++)
                                 {
                                     string nextStatement = lineByLinemethodBody[methodCallIndex];
-
-                                    CommandParserProcess(g, nextStatement);
+                                    if (nextStatement == null || nextStatement.Length == 0)
+                                    {
+                                        continue;
+                                    }
+                                    processEngine(g, nextStatement, isSyntaxCheckOnly);
                                 }
 
                             }
                             else if (inputCommandPartOnly.Contains("method") || inputCommandPartOnly.Contains("endmethod"))
                             {
                                 string methodBody = "";
-                                for (int ifIndex = i+1; ifIndex < lineByLineCmdReader.Length; ifIndex++)
+                                for (int ifIndex = i + 1; ifIndex < lineByLineCmdReader.Length; ifIndex++)
                                 {
                                     string nextStatement = lineByLineCmdReader[ifIndex].Trim();
                                     if (nextStatement.Equals("endmethod"))
@@ -284,11 +320,11 @@ namespace GUI_Program
 
 
                                 }
-                                
+
 
                                 if (methodMap.ContainsKey(methodName))
                                 {
-                                    MessageBox.Show("Duplicate method name exist.");
+                                    throw new GPLException("Duplicate method name exist.");
                                     break;
                                 }
 
@@ -297,14 +333,14 @@ namespace GUI_Program
                             break;
                         default:
                             /*If the command is not recognized*/
-                            MessageBox.Show("Command not supported.");
+                            throw new GPLException("Command '"+ inputCommandPartOnly + "' not supported.", i);
                             break;
                     }
                 }
 
-                    
-                }
+
             }
+        }
             
 
         /* Method to clear all the drawings */
@@ -405,6 +441,45 @@ namespace GUI_Program
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
 
                 return int.Parse(op1) > int.Parse(op2);
+
+
+            }
+            else if (expression.Contains("<"))
+            {
+                string[] ops = expression.Split("<");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) < int.Parse(op2);
+
+
+            }
+           else if (expression.Contains(">="))
+            {
+                string[] ops = expression.Split(">=");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) >= int.Parse(op2);
+
+
+            }
+            else if (expression.Contains("<="))
+            {
+                string[] ops = expression.Split("<=");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) <= int.Parse(op2);
 
 
             }

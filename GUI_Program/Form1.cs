@@ -1,4 +1,3 @@
-using Shapes;
 using System.Net;
 using System.Reflection.Metadata;
 using System.Windows.Forms;
@@ -31,7 +30,7 @@ namespace GUI_Program
             Graphics g = drawingBoard.CreateGraphics();
 
             CommandParser commandParser = new CommandParser();
-            commandParser.CommandParserProcess(g, inputCommand);
+            commandParser.CommandParserProcess(g, inputCommand, false);
 
 
         }
@@ -40,7 +39,17 @@ namespace GUI_Program
         private void syntaxButton_Click(object sender, EventArgs e)
         {
 
-            MessageBox.Show("Syntax button message");
+            String inputCommand = richcodeTextBox.Text;
+            if (inputCommand == null || inputCommand.Length == 0)
+            {
+                inputCommand = codeTextBox.Text;
+            }
+
+            Graphics g = drawingBoard.CreateGraphics();
+
+            CommandParser commandParser = new CommandParser();
+            commandParser.CommandParserProcess(g, inputCommand, true);
+
         }
 
         private void codeTextBox_TextChanged(object sender, EventArgs e)
