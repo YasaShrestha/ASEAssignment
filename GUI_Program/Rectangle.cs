@@ -1,7 +1,7 @@
-﻿namespace Shapes
+﻿namespace GUI_Program
 {
     
-    public class Rectangle : Shape
+    public class Rectangle : Shapes
     {
         protected int width;
         protected int height;

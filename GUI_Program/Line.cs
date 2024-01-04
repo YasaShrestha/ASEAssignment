@@ -1,7 +1,7 @@
-﻿namespace Shapes
+﻿namespace GUI_Program
 {
    
-    public class Line : Shape
+    public class Line : Shapes
     {
         protected int startPoint;
         protected int endPoint;

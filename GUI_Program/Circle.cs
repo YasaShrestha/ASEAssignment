@@ -1,7 +1,7 @@
-﻿namespace Shapes
+﻿namespace GUI_Program
 {
     
-    public class Circle : Shape
+    public class Circle : Shapes
     {
         protected int radius;
         

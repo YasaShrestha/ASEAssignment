@@ -1,7 +1,7 @@
-﻿namespace Shapes
+﻿namespace GUI_Program
 {
     
-    public class Triangle : Shape
+    public class Triangle : Shapes
     {
         protected int width;
         protected int height;
