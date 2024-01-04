@@ -17,6 +17,8 @@ namespace GUI_Program
         private int Ypos = 0;
         private bool fill = false;
 
+        private Dictionary<string, string> variableValueMap = new Dictionary<string, string>();
+
         public void CommandParserProcess(Graphics g, String inputCommand)
         {
             if (inputCommand == null || inputCommand.Length == 0)
@@ -43,17 +45,35 @@ namespace GUI_Program
 
                     String[] paramArray = inputParam.Split(",");
 
-                    // Process different commands based on the inputCommandPartOnly
+                String[] paramArrayParsed = new String[paramArray.Length];
+                int count = 0;
+                    foreach ( var param in paramArray )
+                {
+                    paramArrayParsed[count] = variableValueMap.ContainsKey(param)? variableValueMap[param] : param;
+                    count++;
+                }
+                paramArray = paramArrayParsed;
+
+                    if (cmd.Contains("="))
+                {
+                    string[] variables = cmd.Split("=", 2);
+                    string variableName = variables[0].Trim();
+                    string variableValue = variables[1].Trim();
+                    variableValueMap.Add(variableName, variableValue);
+                }
+                else
+                {
+                    /* Process different commands based on the inputCommandPartOnly*/
                     switch (inputCommandPartOnly)
                     {
                         case "circle":
-                        if (paramArray ==null||paramArray.Length!= 1 || paramArray[0].Trim().Length==0|| !int.TryParse(paramArray[0], out _))
-                        {
-                            MessageBox.Show("Cirlce need one parameter. Please input the radius value.");
-                            return;
-                        }
-                   
-                        
+                            if (paramArray == null || paramArray.Length != 1 || paramArray[0].Trim().Length == 0 || !int.TryParse(paramArray[0], out _))
+                            {
+                                MessageBox.Show("Cirlce need one parameter. Please input the valid radius value.");
+                                return;
+                            }
+
+
                             int radius = Int32.Parse(paramArray[0]);
 
                             Shape circle = new Shapes.Circle(g, pen, Xpos, Ypos, radius);
@@ -61,39 +81,39 @@ namespace GUI_Program
                             break;
 
                         case "rectangle":
-                        if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _)|| !int.TryParse(paramArray[1], out _))
-                        {
-                            MessageBox.Show("Please input valid width and height for rectangle ");
-                            return;
+                            if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
+                            {
+                                MessageBox.Show("Please input valid width and height for rectangle ");
+                                return;
 
-                        }
-                        int width = Int32.Parse(paramArray[0]);
+                            }
+                            int width = Int32.Parse(paramArray[0]);
                             int height = Int32.Parse(paramArray[1]);
                             Shape rectangle = new Shapes.Rectangle(g, pen, Xpos, Ypos, width, height);
                             rectangle.Draw(fill);
                             break;
 
                         case "drawto":
-                        if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) && !int.TryParse(paramArray[1], out _))
-                        {
-                            MessageBox.Show("Please input valid starting point value and end point value ");
-                            return;
+                            if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) && !int.TryParse(paramArray[1], out _))
+                            {
+                                MessageBox.Show("Please input valid starting point value and end point value ");
+                                return;
 
-                        }
-                        int startingPoint = Int32.Parse(paramArray[0]);
+                            }
+                            int startingPoint = Int32.Parse(paramArray[0]);
                             int endPoint = Int32.Parse(paramArray[1]);
                             Shape line = new Shapes.Line(g, pen, Xpos, Ypos, startingPoint, endPoint);
                             line.Draw(fill);
                             break;
 
                         case "triangle":
-                        if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
-                        {
-                            MessageBox.Show("Please input valid width and height for the triangle ");
-                            return;
+                            if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
+                            {
+                                MessageBox.Show("Please input valid width and height for the triangle ");
+                                return;
 
-                        }
-                        int triWidth = Int32.Parse(paramArray[0]);
+                            }
+                            int triWidth = Int32.Parse(paramArray[0]);
                             int triHeight = Int32.Parse(paramArray[1]);
                             Shape triangle = new Shapes.Triangle(g, pen, Xpos, Ypos, triWidth, triHeight);
                             triangle.Draw(fill);
@@ -101,6 +121,7 @@ namespace GUI_Program
 
                         case "clear":
                             clearDraw(g);
+
                             break;
 
                         case "reset":
@@ -108,34 +129,53 @@ namespace GUI_Program
                             break;
 
                         case "moveto":
-                        if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
-                        {
-                            MessageBox.Show("Please input valid X axis and Y axis ");
-                            return;
+                            if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
+                            {
+                                MessageBox.Show("Please input valid X axis and Y axis ");
+                                return;
 
-                        }
-                        int newXpos = Int32.Parse(paramArray[0]);
+                            }
+                            int newXpos = Int32.Parse(paramArray[0]);
                             int newYpos = Int32.Parse(paramArray[1]);
                             moveTo(newXpos, newYpos);
                             break;
 
                         case "pen":
-                        if (paramArray[0] != "red"&& paramArray[0] != "green" && paramArray[0]!="blue")
-                        {
-                            MessageBox.Show("Please input valid colour :red green or blue");
+                            if (paramArray[0] != "red" && paramArray[0] != "green" && paramArray[0] != "blue")
+                            {
+                                MessageBox.Show("Please input valid colour :red green or blue");
 
-                             return;
-                         }
+                                return;
+                            }
                             PenColor = Color.FromName(paramArray[0]);
-                        
+
+
+                            break;
+                        case "fill":
+                            if (paramArray[0].ToLower() == "on")
+                            {
+                                fill = true;
+
+                            }
+                            else if (paramArray[0].ToLower() == "off")
+                            {
+                                fill = false;
+                            }
+                            else
+                                MessageBox.Show("Please give a valid command for fill.");
+
+
 
                             break;
 
                         default:
-                            // If the command is not recognized
+                            /*If the command is not recognized*/
                             MessageBox.Show("Command not supported.");
                             break;
                     }
+                }
+
+                    
                 }
             }
             
