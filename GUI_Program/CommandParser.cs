@@ -18,6 +18,7 @@ namespace GUI_Program
         private bool fill = false;
 
         private Dictionary<string, string> variableValueMap = new Dictionary<string, string>();
+        private Dictionary<string, string> methodMap = new Dictionary<string, string>();
 
         public void CommandParserProcess(Graphics g, String inputCommand)
         {
@@ -32,6 +33,11 @@ namespace GUI_Program
                 for (int i = 0; i < lineByLineCmdReader.Length; i++)
                 {
                     Pen pen = new Pen(PenColor);
+
+                if(lineByLineCmdReader[i].Trim().Length == 0)
+                {
+                    continue;
+                }
 
                     var cmd = lineByLineCmdReader[i];
 
@@ -239,6 +245,54 @@ namespace GUI_Program
                                     }
                                 }
 
+                            }
+                            break;
+
+                        case "callmethod":
+                        case "endmethod":
+                        case "method":
+                            string methodName = paramArray[0].Trim();
+                            if (inputCommandPartOnly.Contains("callmethod")){
+                                if (!methodMap.ContainsKey(methodName))
+                                {
+                                    MessageBox.Show("Method not declare yet.");
+                                    break;
+                                }
+
+                                string methodBody = methodMap[methodName];
+                                String[] lineByLinemethodBody = methodBody.Split("\n");
+                                for (int methodCallIndex = 0; methodCallIndex < lineByLinemethodBody.Length; methodCallIndex++)
+                                {
+                                    string nextStatement = lineByLinemethodBody[methodCallIndex];
+
+                                    CommandParserProcess(g, nextStatement);
+                                }
+
+                            }
+                            else if (inputCommandPartOnly.Contains("method") || inputCommandPartOnly.Contains("endmethod"))
+                            {
+                                string methodBody = "";
+                                for (int ifIndex = i+1; ifIndex < lineByLineCmdReader.Length; ifIndex++)
+                                {
+                                    string nextStatement = lineByLineCmdReader[ifIndex].Trim();
+                                    if (nextStatement.Equals("endmethod"))
+                                    {
+                                        i = ifIndex;
+                                        break;
+                                    }
+                                    methodBody = methodBody + "\n" + nextStatement;
+
+
+                                }
+                                
+
+                                if (methodMap.ContainsKey(methodName))
+                                {
+                                    MessageBox.Show("Duplicate method name exist.");
+                                    break;
+                                }
+
+                                methodMap.Add(methodName, methodBody);
                             }
                             break;
                         default:
