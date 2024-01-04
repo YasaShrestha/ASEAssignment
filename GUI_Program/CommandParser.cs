@@ -34,6 +34,8 @@ namespace GUI_Program
                     Pen pen = new Pen(PenColor);
 
                     var cmd = lineByLineCmdReader[i];
+
+                
                     var splitted = cmd.Split(' ', 2);
                     var inputCommandPartOnly = splitted[0].ToLower().Trim();
 
@@ -58,7 +60,12 @@ namespace GUI_Program
                 {
                     string[] variables = cmd.Split("=", 2);
                     string variableName = variables[0].Trim();
-                    string variableValue = variables[1].Trim();
+                    string variableValue = calculation(variables[1].Trim()).ToString();
+
+                    if (variableValueMap.ContainsKey(variableName))
+                    {
+                        variableValueMap.Remove(variableName);
+                    }
                     variableValueMap.Add(variableName, variableValue);
                 }
                 else
@@ -167,7 +174,27 @@ namespace GUI_Program
 
 
                             break;
-
+                        case "endif":
+                        case "if":
+                            string evalCondtion = paramArray[0].Trim();
+                            if (evalCondtion.Equals("endif") || conditionEval(evalCondtion))
+                            {
+                                // do nothing
+                            }
+                            else
+                            {
+                                for (int ifIndex = i; ifIndex < lineByLineCmdReader.Length; ifIndex++)
+                                {
+                                    string nextStatement = lineByLineCmdReader[ifIndex].Trim();
+                                    if (nextStatement.Equals("endif"))
+                                    {
+                                        i = ifIndex;
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                        
                         default:
                             /*If the command is not recognized*/
                             MessageBox.Show("Command not supported.");
@@ -204,8 +231,46 @@ namespace GUI_Program
             this.Xpos = newXpos;
             this.Ypos = newYpos;
         }
+
+        public int calculation(string expression)
+        {
+
+            if (expression.Contains("+"))
+            {
+                string[] ops = expression.Split("+");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) + int.Parse(op2);
+
+
+            }
+            return int.Parse(expression);
+        }
+
+        public Boolean conditionEval(string expression)
+        {
+
+            if (expression.Contains(">"))
+            {
+                string[] ops = expression.Split(">");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+
+                return int.Parse(op1) > int.Parse(op2);
+
+
+            }
+            return false;
+        }
     }
 
-
+    
 
 }
