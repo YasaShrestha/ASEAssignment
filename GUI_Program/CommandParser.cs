@@ -149,7 +149,7 @@ namespace GUI_Program
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
                                 throw new GPLException("Please input valid width and height for the triangle ", i);
-                                return;
+                              
 
                             }
                             int triWidth = Int32.Parse(paramArray[0]);
@@ -173,7 +173,7 @@ namespace GUI_Program
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
                                 throw new GPLException("Please input valid X axis and Y axis ", i);
-                                return;
+                               
 
                             }
                             int newXpos = Int32.Parse(paramArray[0]);
@@ -186,7 +186,7 @@ namespace GUI_Program
                             {
                                 throw new GPLException("Please input valid colour :red green or blue", i);
 
-                                return;
+                                
                             }
                             PenColor = Color.FromName(paramArray[0]);
 
