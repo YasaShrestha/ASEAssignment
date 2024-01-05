@@ -29,8 +29,7 @@ namespace GUI_Program
 
             Graphics g = drawingBoard.CreateGraphics();
 
-            CommandParser commandParser = new CommandParser();
-            commandParser.CommandParserProcess(g, inputCommand, false);
+            threadGPL(1, g, inputCommand, false);
 
 
         }
@@ -47,8 +46,7 @@ namespace GUI_Program
 
             Graphics g = drawingBoard.CreateGraphics();
 
-            CommandParser commandParser = new CommandParser();
-            commandParser.CommandParserProcess(g, inputCommand, true);
+            threadGPL(1, g, inputCommand, true);
 
         }
 
@@ -66,7 +64,7 @@ namespace GUI_Program
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-           
+
 
             openFileDialog1.InitialDirectory = "c:\\";
             openFileDialog1.Filter = "txt files(*.txt)|*.txt|All files(*.*)|*.*;";
@@ -92,7 +90,7 @@ namespace GUI_Program
             saveFileDialog1.InitialDirectory = "c:\\";
             saveFileDialog1.Filter = "txt files(*.txt)|*.txt|All files(*.*)|*.*;";
             saveFileDialog1.FilterIndex = 0;
-            saveFileDialog1.RestoreDirectory= true;
+            saveFileDialog1.RestoreDirectory = true;
 
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
             {
@@ -109,6 +107,47 @@ namespace GUI_Program
 
             //save inputCommand to file
             File.WriteAllText(saveFileLocation, inputCommand);
+        }
+
+
+
+        private void run2_Click(object sender, EventArgs e)
+        {
+            String inputCommand = richTextBox2.Text;
+
+
+            Graphics g = drawingBoard.CreateGraphics();
+
+            threadGPL(2, g, inputCommand, false);
+        }
+
+        private void syntaxButton2_Click(object sender, EventArgs e)
+        {
+
+            String inputCommand = richTextBox2.Text;
+
+
+            Graphics g = drawingBoard.CreateGraphics();
+            threadGPL(2, g, inputCommand, true);
+
+
+        }
+
+        public void threadGPL(int runProgramNumber, Graphics g, String inputCommand, bool isSyntaxCheck)
+        {
+            Thread thread = new Thread(()=>
+            {
+                if( runProgramNumber == 1)
+                {
+                    Thread.Sleep(5000);
+                }else if(runProgramNumber == 2)
+                {
+                    Thread.Sleep(1000);
+                }
+                CommandParser commandParser = new CommandParser();
+                commandParser.CommandParserProcess(g, inputCommand, isSyntaxCheck, runProgramNumber);
+            });
+            thread.Start();
         }
     }
 }

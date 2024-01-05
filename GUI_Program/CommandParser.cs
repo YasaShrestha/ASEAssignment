@@ -16,31 +16,36 @@ namespace GUI_Program
         private int Ypos = 0;
         private bool fill = false;
 
+        public string getPenPos()
+        {
+            return Xpos + "," + Ypos;
+        }
+
         private Dictionary<string, string> variableValueMap = new Dictionary<string, string>();
         private Dictionary<string, string> methodMap = new Dictionary<string, string>();
 
-        public void CommandParserProcess(Graphics g, String inputCommand, Boolean isSyntaxCheckOnly)
+        public void CommandParserProcess(Graphics g, String inputCommand, Boolean isSyntaxCheckOnly, int runProgramNumber)
         {
             try
             {
                 if (inputCommand == null || inputCommand.Length == 0)
                 {
-                    throw new GPLException("Command not found. Please input command.");
+                    throw new GPLException("Program:"+ runProgramNumber + "-> Command not found. Please input command.");
                 }
                 processEngine(g, inputCommand, isSyntaxCheckOnly);
                 if (isSyntaxCheckOnly)
                 {
-                    MessageBox.Show("Success: No Syntax Error.");
+                    MessageBox.Show("Program:" + runProgramNumber + "-> Success: No Syntax Error.");
                 }else
                 {
-                    MessageBox.Show("Success: Successfully Run.");
+                    MessageBox.Show("Program:" + runProgramNumber + "-> Success: Successfully Run.");
                 }
             }
             catch(GPLException x) {
-                MessageBox.Show("User Error: "+x.Message);
+                MessageBox.Show("Program:" + runProgramNumber + "-> User Error: "+x.Message);
             }
             catch(Exception x) {
-                MessageBox.Show("System Error"+x.Message);
+                MessageBox.Show("Program:" + runProgramNumber + "-> System Error"+x.Message);
             }
         }
 
@@ -104,7 +109,7 @@ namespace GUI_Program
                             if (paramArray == null || paramArray.Length != 1 || paramArray[0].Trim().Length == 0 || !int.TryParse(paramArray[0], out _))
                             {
                                 throw new GPLException("Cirlce need one parameter. Please input the valid radius value.", i);
-                                return;
+                                
                             }
 
 
@@ -121,7 +126,7 @@ namespace GUI_Program
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) || !int.TryParse(paramArray[1], out _))
                             {
                                 throw new GPLException("Please input valid width and height for rectangle ", i);
-                                return;
+
 
                             }
                             int width = Int32.Parse(paramArray[0]);
@@ -135,7 +140,7 @@ namespace GUI_Program
                             if (paramArray.Length != 2 || !int.TryParse(paramArray[0], out _) && !int.TryParse(paramArray[1], out _))
                             {
                                 throw new GPLException("Please input valid starting point value and end point value ", i);
-                                return;
+                               
 
                             }
                             int startingPoint = Int32.Parse(paramArray[0]);
@@ -289,7 +294,7 @@ namespace GUI_Program
                                 if (!methodMap.ContainsKey(methodName))
                                 {
                                     throw new GPLException("Method not declare yet.", i);
-                                    break;
+                                    
                                 }
 
                                 string methodBody = methodMap[methodName];
@@ -325,7 +330,7 @@ namespace GUI_Program
                                 if (methodMap.ContainsKey(methodName))
                                 {
                                     throw new GPLException("Duplicate method name exist.");
-                                    break;
+                                    
                                 }
 
                                 methodMap.Add(methodName, methodBody);
@@ -334,7 +339,7 @@ namespace GUI_Program
                         default:
                             /*If the command is not recognized*/
                             throw new GPLException("Command '"+ inputCommandPartOnly + "' not supported.", i);
-                            break;
+                            
                     }
                 }
 
@@ -379,7 +384,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) + int.Parse(op2);
 
 
@@ -393,7 +405,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) - int.Parse(op2);
 
 
@@ -407,7 +426,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) * int.Parse(op2);
 
 
@@ -420,7 +446,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) / int.Parse(op2);
 
 
@@ -439,7 +472,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) > int.Parse(op2);
 
 
@@ -452,7 +492,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) < int.Parse(op2);
 
 
@@ -465,7 +512,14 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if(!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) >= int.Parse(op2);
 
 
@@ -478,8 +532,35 @@ namespace GUI_Program
 
                 string op2 = ops[1].Trim();
                 op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
-
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
                 return int.Parse(op1) <= int.Parse(op2);
+
+
+            }
+            else if (expression.Contains("=="))
+            {
+                string[] ops = expression.Split("==");
+                string op1 = ops[0].Trim();
+                op1 = variableValueMap.ContainsKey(op1) ? variableValueMap[op1] : op1;
+
+                string op2 = ops[1].Trim();
+                op2 = variableValueMap.ContainsKey(op2) ? variableValueMap[op2] : op2;
+                if (!int.TryParse(op1, out _))
+                {
+                    throw new GPLException(op1 + " value is not a integer.");
+                }
+                if (!int.TryParse(op2, out _))
+                {
+                    throw new GPLException(op2 + " value is not a integer.");
+                }
+                return int.Parse(op1) == int.Parse(op2);
 
 
             }
