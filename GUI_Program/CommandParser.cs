@@ -88,20 +88,7 @@ namespace GUI_Program
                 }
                 paramArray = paramArrayParsed;
 
-                if (cmd.Contains("="))
-                {
-                    string[] variables = cmd.Split("=", 2);
-                    string variableName = variables[0].Trim();
-                    string variableValue = calculation(variables[1].Trim()).ToString();
-
-                    if (variableValueMap.ContainsKey(variableName))
-                    {
-                        variableValueMap.Remove(variableName);
-                    }
-                    variableValueMap.Add(variableName, variableValue);
-                }
-                else
-                {
+                
                     /* Process different commands based on the inputCommandPartOnly*/
                     switch (inputCommandPartOnly)
                     {
@@ -215,6 +202,7 @@ namespace GUI_Program
                             break;
                         case "endif":
                         case "if":
+
                             string evalCondtion = paramArray[0].Trim();
                             if (evalCondtion.Equals("endif") || conditionEval(evalCondtion))
                             {
@@ -222,6 +210,7 @@ namespace GUI_Program
                             }
                             else
                             {
+      
                                 for (int ifIndex = i; ifIndex < lineByLineCmdReader.Length; ifIndex++)
                                 {
                                     string nextStatement = lineByLineCmdReader[ifIndex].Trim();
@@ -337,11 +326,27 @@ namespace GUI_Program
                             }
                             break;
                         default:
-                            /*If the command is not recognized*/
-                            throw new GPLException("Command '"+ inputCommandPartOnly + "' not supported.", i);
+                            if (cmd.Contains("="))
+                            {
+                                string[] variables = cmd.Split("=", 2);
+                                string variableName = variables[0].Trim();
+                                string variableValue = calculation(variables[1].Trim()).ToString();
+
+                                if (variableValueMap.ContainsKey(variableName))
+                                {
+                                    variableValueMap.Remove(variableName);
+                                }
+                                variableValueMap.Add(variableName, variableValue);
+                            }
+                            else
+                            {
+                                /*If the command is not recognized*/
+                                throw new GPLException("Command '" + inputCommandPartOnly + "' not supported.", i);
+                            }
+                            break;
                             
                     }
-                }
+                
 
 
             }
@@ -375,7 +380,8 @@ namespace GUI_Program
 
         public int calculation(string expression)
         {
-
+            /*This methiod will do the calculation for the variable. For example a=a+10
+             */
             if (expression.Contains("+"))
             {
                 string[] ops = expression.Split("+");
@@ -463,6 +469,8 @@ namespace GUI_Program
 
         public Boolean conditionEval(string expression)
         {
+            /* This conditionEval will evaluate all the condition for the IF condition,
+             */
 
             if (expression.Contains(">"))
             {

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace GUI_Program.nUnitTests
 {
+    /* This is method test class to test valid methods.
+     */
     internal class MethodTest
     {
 

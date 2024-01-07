@@ -22,7 +22,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void CircleInvalidTest()
         {
-            String command = "circle x"; ;
+            String command = "circle x"; 
             
 
             var exception = Assert.Throws<GPLException>(() => parser.processEngine(null, command, true));
@@ -34,7 +34,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void RectangleInvalidTest()
         {
-            String command = "rectangle"; ;
+            String command = "rectangle"; 
 
 
             var exception = Assert.Throws<GPLException>(() => parser.processEngine(null, command, true));
@@ -47,7 +47,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void TriangleInvalidTest()
         {
-            String command = "triangle a"; ;
+            String command = "triangle a"; 
 
 
             var exception = Assert.Throws<GPLException>(() => parser.processEngine(null, command, true));
@@ -60,7 +60,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void MovetoInvalidTest()
         {
-            String command = "moveto"; ;
+            String command = "moveto"; 
 
 
             var exception = Assert.Throws<GPLException>(() => parser.processEngine(null, command, true));
@@ -72,7 +72,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void DrawtoInvalidTest()
         {
-            String command = "drawto"; ;
+            String command = "drawto"; 
 
 
             var exception = Assert.Throws<GPLException>(() => parser.processEngine(null, command, true));

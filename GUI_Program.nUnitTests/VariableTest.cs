@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace GUI_Program.nUnitTests
 {
+    /* This a test class for variable to test valid variables.
+     */
     internal class VariableTest
     {
 
@@ -19,7 +21,7 @@ namespace GUI_Program.nUnitTests
 
 
         [Test]
-        public void VariableValidTest()
+        public void VariablValidTest()
         {
             String command = "a=10";
             parser.processEngine(null, command, true);

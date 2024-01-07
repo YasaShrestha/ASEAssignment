@@ -37,6 +37,23 @@ namespace GUI_Program.nUnitTests
         }
 
         [Test]
+        public void IfValidTest3()
+        {
+            String command = "a=40\r\nif a<50\r\ncircle a\r\nendif";
+            parser.processEngine(null, command, true);
+            Assert.AreEqual("0,0", parser.getPenPos());
+        }
+
+
+        [Test]
+        public void IfValidTest4()
+        {
+            String command = "a=40\r\nif a<50\r\ncircle a\r\nrectangle a,50\r\nendif";
+            parser.processEngine(null, command, true);
+            Assert.AreEqual("0,0", parser.getPenPos());
+        }
+
+        [Test]
         public void IfInValidTest()
         {
             String command = "if a<"; 

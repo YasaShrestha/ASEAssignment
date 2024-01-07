@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace GUI_Program
 {
+    /*This is exception class to hand;le the errors in the code.
+     */
     public class GPLException : Exception
     {
         string errorLine;

@@ -22,7 +22,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void CircleValidTest()
         {
-            String command = "circle 80"; ;
+            String command = "circle 80"; 
             parser.processEngine(null, command, true);
 
             Assert.AreEqual("0,0", parser.getPenPos());
@@ -31,7 +31,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void RectangleValidTest()
         {
-            String command = "rectangle 40,40"; ;
+            String command = "rectangle 40,40"; 
             parser.processEngine(null, command, true);
 
             Assert.AreEqual("0,0", parser.getPenPos());
@@ -40,7 +40,7 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void TriangleValidTest()
         {
-            String command = "triangle 40,40"; ;
+            String command = "triangle 40,40"; 
             parser.processEngine(null, command, true);
 
             Assert.AreEqual("0,0", parser.getPenPos());
@@ -49,10 +49,11 @@ namespace GUI_Program.nUnitTests
         [Test]
         public void DrawToValidTest()
         {
-            String command = "drawto 40,40"; ;
+            String command = "drawto 40,40"; 
             parser.processEngine(null, command, true);
 
             Assert.AreEqual("0,0", parser.getPenPos());
         }
+
     }
 }
